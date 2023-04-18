@@ -8,3 +8,5 @@
 - alter user 'root'@'localhost' identified by 'your_password'
 - show databases -> to see bimeh database
 - use bimeh -> to enter in database
+- GRANT ALL PRIVILEGES ON *.* TO 'bimeh'@'%' WITH GRANT OPTION
+- npx prisma db push
