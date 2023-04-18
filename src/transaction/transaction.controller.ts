@@ -11,6 +11,7 @@ import {
 import { TransactionService } from './transaction.service';
 import { AddTransactionDTO } from './dtos';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { SelectsPipe } from 'src/pipes/selects.pipe';
 
 @Controller('transaction')
 export class TransactionController {
@@ -37,17 +38,23 @@ export class TransactionController {
   }
 
   @Post()
-  createTransaction(@Body() body: AddTransactionDTO) {
-    return this.transactionService.create(body);
+  createTransaction(
+    @Body() body: AddTransactionDTO,
+    @Query('selects', SelectsPipe) select: object,
+  ) {
+    return this.transactionService.create(body, select);
   }
 
   @Get(':id')
-  selectTransaction(@Param('id', ParseIntPipe) id: number) {
-    return this.transactionService.selectById(id);
+  selectTransaction(
+    @Param('id', ParseIntPipe) id: number,
+    @Query('selects', SelectsPipe) select: object,
+  ) {
+    return this.transactionService.selectById(id, select);
   }
 
   @Get()
-  selectAllTransactions() {
-    return this.transactionService.selectAll();
+  selectAllTransactions(@Query('selects', SelectsPipe) select: object) {
+    return this.transactionService.selectAll(select);
   }
 }

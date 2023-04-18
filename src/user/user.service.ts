@@ -12,18 +12,21 @@ export class UserService {
   @Inject(PrismaService)
   private readonly prismaService: PrismaService;
 
-  async create(data: CreateUserDTO) {
+  async create(data: CreateUserDTO, select?: any) {
     const duplicateByName = await this.prismaService.client.user.findFirst({
       where: { name: data.name },
     });
     if (duplicateByName) {
       throw new ConflictException('duplicate user by name');
     }
-    return this.prismaService.client.user.create({ data: { name: data.name } });
+    return this.prismaService.client.user.create({
+      data: { name: data.name },
+      select,
+    });
   }
 
-  selectAll() {
-    return this.prismaService.client.user.findMany();
+  selectAll(select?: any) {
+    return this.prismaService.client.user.findMany({ select });
   }
 
   async addCredit(id: number, credit: number) {
@@ -33,10 +36,10 @@ export class UserService {
       data: { credit: +user.credit + +credit },
     });
   }
-
-  async selectById(id: number) {
+  async selectById(id: number, select?: any) {
     const user = await this.prismaService.client.user.findUnique({
       where: { id },
+      select,
     });
     if (!user) {
       throw new NotFoundException('user not found');
