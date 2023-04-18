@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  bimehdb:
+    container_name: bimehdb
+    # The Best Practice Is Use Specify Version Instead of latest version
+    image: mysql:latest
+    ports:
+      - '3307:3306'
+    env_file:
+      - '../.env'
+    volumes:
+      - ../../bimeh_volume:/var/lib/mysql
+    restart: on-failure
