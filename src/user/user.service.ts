@@ -29,21 +29,11 @@ export class UserService {
     return this.prismaService.client.user.findMany({ select });
   }
 
-  async addCredit(id: number, credit: number) {
-    const user = await this.selectById(id);
-    return this.prismaService.client.user.update({
-      where: { id: user.id },
-      data: { credit: +user.credit + +credit },
-    });
-  }
   async selectById(id: number, select?: any) {
     const user = await this.prismaService.client.user.findUnique({
       where: { id },
       select,
     });
-    if (!user) {
-      throw new NotFoundException('user not found');
-    }
     return user;
   }
 }
