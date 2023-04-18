@@ -13,9 +13,10 @@ export class TransactionService {
   @Inject(CACHE_MANAGER)
   private readonly cacheService: Cache;
 
-  selectById(id: number) {
+  selectById(id: number, select?: any) {
     return this.prismaService.client.transaction.findUnique({
       where: { id },
+      select,
     });
   }
 
@@ -53,11 +54,11 @@ export class TransactionService {
     return totalAmountsResult;
   }
 
-  selectAll() {
-    return this.prismaService.client.transaction.findMany();
+  selectAll(select?: any) {
+    return this.prismaService.client.transaction.findMany({ select });
   }
 
-  create(data: AddTransactionDTO) {
+  create(data: AddTransactionDTO, select?: any) {
     return this.prismaService.client.$transaction(async (manager) => {
       const user = await manager.user.findUnique({ where: { id: data.user } });
       await manager.user.update({
@@ -70,8 +71,9 @@ export class TransactionService {
           userId: user.id,
           referenceId: this._generateReferenceId(),
         },
+        select,
       });
-      return { referenceId: transaction.referenceId };
+      return transaction;
     });
   }
 
