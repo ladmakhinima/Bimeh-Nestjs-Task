@@ -34,13 +34,6 @@ export class TransactionService {
     return totalAmount;
   }
 
-  getTotalAmountBasedOnDate(date?: string) {
-    if (date) {
-      return this.getTotalAmount(date);
-    }
-    return this.getAllTotalAmount();
-  }
-
   async getAllTotalAmount() {
     const dates = await this.cacheService.store.keys();
     const totalAmountsResult = dates.reduce(

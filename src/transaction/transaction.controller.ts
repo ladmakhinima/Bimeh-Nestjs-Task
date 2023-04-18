@@ -27,14 +27,9 @@ export class TransactionController {
     console.log(totalAmount);
   }
 
-  @Get('report/:date')
-  getTotalAmountReportBasedOnDate(@Param('date') date: string) {
-    return this.transactionService.getTotalAmountBasedOnDate(date);
-  }
-
   @Get('report')
   getTransactionTotalAmountReport() {
-    return this.transactionService.getTotalAmountBasedOnDate();
+    return this.transactionService.getAllTotalAmount();
   }
 
   @Post()
