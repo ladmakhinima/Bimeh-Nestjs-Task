@@ -18,7 +18,7 @@ import {
   GetTransactionByIdDoc,
   GetTransactionReportDoc,
   GetTransactionsDoc,
-} from 'src/_docs/transaction';
+} from './docs';
 
 @ApiTags('transaction')
 @Controller('transaction')
