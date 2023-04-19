@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  db_container:
+    build: ./db
+    container_name: db_container
+    ports:
+      - '3307:3306'
+    volumes:
+      - ../../bimeh_volume:/var/lib/mysql
+    restart: on-failure
+  app_container:
+    container_name: app_container
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: on-failure
+    ports:
+      - '5000:5000'
+    depends_on:
+      - db_container
+    links:
+      - db_container
+    env_file:
+      - './.env'
+    tty: true
+    

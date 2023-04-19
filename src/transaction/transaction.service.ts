@@ -52,7 +52,7 @@ export class TransactionService {
   }
 
   create(data: AddTransactionDTO, select?: any) {
-    return this.prismaService.client.$transaction(async (manager) => {
+    return this.prismaService.client.$transaction(async (manager: any) => {
       const user = await manager.user.findUnique({ where: { id: data.user } });
       await manager.user.update({
         data: { credit: +user.credit + +data.amount },

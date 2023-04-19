@@ -12,7 +12,9 @@ import { TransactionService } from './transaction.service';
 import { AddTransactionDTO } from './dtos';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { SelectsPipe } from 'src/pipes/selects.pipe';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('transaction')
 @Controller('transaction')
 export class TransactionController {
   @Inject(TransactionService)

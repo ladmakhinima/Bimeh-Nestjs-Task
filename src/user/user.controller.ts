@@ -11,7 +11,9 @@ import {
 import { CreateUserDTO } from './dtos';
 import { UserService } from './user.service';
 import { SelectsPipe } from 'src/pipes/selects.pipe';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('user')
 @Controller('user')
 export class UserController {
   @Inject(UserService)
