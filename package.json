@@ -19,7 +19,10 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "app:run-prod": "npx prisma db push --force-reset && npx prisma db push && npm run start"
+    "app:run-prod": "npx prisma db push --force-reset && npx prisma db push && npx prisma db seed && npm start"
+  },
+  "prisma": {
+    "seed": "cross-env NODE_ENV=dev ts-node prisma/seed.ts"
   },
   "dependencies": {
     "@nestjs/cache-manager": "^1.0.0",
