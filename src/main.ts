@@ -8,6 +8,8 @@ const bootstrap = async () => {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
   const port = configService.get<string>('PORT');
+  const dbUrl = configService.get<string>('DATABASE_URL');
+
   app.enableCors();
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe());
@@ -21,7 +23,7 @@ const bootstrap = async () => {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('document', app, document);
   await app.listen(port, () => {
-    console.log(`the app is running at ${port}`);
+    console.log(`the app is running at ${port} at database url : ${dbUrl}`);
   });
 };
 
