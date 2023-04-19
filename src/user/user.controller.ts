@@ -2,14 +2,13 @@ import {
   Body,
   Controller,
   Get,
-  HttpStatus,
   Inject,
   Param,
   ParseIntPipe,
   Post,
   Query,
 } from '@nestjs/common';
-import { CreateUserDTO } from './dtos';
+import { CreateUserDTO, GetUserResponseDTO } from './dtos';
 import { UserService } from './user.service';
 import { SelectsPipe } from 'src/pipes/selects.pipe';
 import {
@@ -20,7 +19,6 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
-import { GetUserResponseDTO } from './dtos/get-user-response.dto';
 
 @ApiTags('user')
 @Controller('user')
