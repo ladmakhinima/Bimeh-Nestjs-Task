@@ -9,21 +9,16 @@ import {
   Query,
 } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
-import {
-  AddTransactionDTO,
-  GetTransactionReportResponse,
-  GetTransactionResponseDTO,
-} from './dtos';
+import { AddTransactionDTO } from './dtos';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { SelectsPipe } from 'src/pipes/selects.pipe';
+import { ApiTags } from '@nestjs/swagger';
 import {
-  ApiBody,
-  ApiCreatedResponse,
-  ApiOkResponse,
-  ApiParam,
-  ApiQuery,
-  ApiTags,
-} from '@nestjs/swagger';
+  CreateTransactionDoc,
+  GetTransactionByIdDoc,
+  GetTransactionReportDoc,
+  GetTransactionsDoc,
+} from 'src/_docs/transaction';
 
 @ApiTags('transaction')
 @Controller('transaction')
@@ -40,24 +35,13 @@ export class TransactionController {
     console.log(totalAmount);
   }
 
-  @ApiOkResponse({
-    description:
-      'The api that return all the reported transaction that provide every day',
-    type: GetTransactionReportResponse,
-    isArray: true,
-  })
+  @GetTransactionReportDoc()
   @Get('report')
   getTransactionTotalAmountReport() {
     return this.transactionService.getAllTotalAmount();
   }
 
-  @ApiBody({
-    type: AddTransactionDTO,
-  })
-  @ApiCreatedResponse({
-    type: GetTransactionResponseDTO,
-    description: 'api for transfering money to wallet',
-  })
+  @CreateTransactionDoc()
   @Post()
   createTransaction(
     @Body() body: AddTransactionDTO,
@@ -67,20 +51,7 @@ export class TransactionController {
   }
 
   @Get(':id')
-  @ApiOkResponse({
-    type: GetTransactionResponseDTO,
-    description: 'Get Single Transaction By Id',
-  })
-  @ApiParam({
-    name: 'id',
-    description: 'the id of transaction that you want',
-  })
-  @ApiQuery({
-    name: 'selects',
-    example: 'id,userId,referenceId,amount,createdAt',
-    description: 'the list of fields that you want from backend',
-    required: false,
-  })
+  @GetTransactionsDoc()
   selectTransaction(
     @Param('id', ParseIntPipe) id: number,
     @Query('selects', SelectsPipe) select: object,
@@ -88,17 +59,7 @@ export class TransactionController {
     return this.transactionService.selectById(id, select);
   }
 
-  @ApiOkResponse({
-    type: GetTransactionResponseDTO,
-    isArray: true,
-    description: 'Get all transactions',
-  })
-  @ApiQuery({
-    name: 'selects',
-    example: 'id,userId,referenceId,amount,createdAt',
-    description: 'the list of fields that you want from backend',
-    required: false,
-  })
+  @GetTransactionByIdDoc()
   @Get()
   selectAllTransactions(@Query('selects', SelectsPipe) select: object) {
     return this.transactionService.selectAll(select);
