@@ -30,6 +30,7 @@ services:
     environment:
       - DATABASE_URL=mysql://root:root@db_container:3306/bimeh
       - PORT=5000
+      - NODE_ENV=prod
 
 networks:
   app-network:
