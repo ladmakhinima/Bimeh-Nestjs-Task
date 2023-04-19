@@ -12,7 +12,15 @@ import { TransactionService } from './transaction.service';
 import { AddTransactionDTO } from './dtos';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { SelectsPipe } from 'src/pipes/selects.pipe';
+import { ApiTags } from '@nestjs/swagger';
+import {
+  CreateTransactionDoc,
+  GetTransactionByIdDoc,
+  GetTransactionReportDoc,
+  GetTransactionsDoc,
+} from './docs';
 
+@ApiTags('transaction')
 @Controller('transaction')
 export class TransactionController {
   @Inject(TransactionService)
@@ -27,11 +35,13 @@ export class TransactionController {
     console.log(totalAmount);
   }
 
+  @GetTransactionReportDoc()
   @Get('report')
   getTransactionTotalAmountReport() {
     return this.transactionService.getAllTotalAmount();
   }
 
+  @CreateTransactionDoc()
   @Post()
   createTransaction(
     @Body() body: AddTransactionDTO,
@@ -41,6 +51,7 @@ export class TransactionController {
   }
 
   @Get(':id')
+  @GetTransactionsDoc()
   selectTransaction(
     @Param('id', ParseIntPipe) id: number,
     @Query('selects', SelectsPipe) select: object,
@@ -48,6 +59,7 @@ export class TransactionController {
     return this.transactionService.selectById(id, select);
   }
 
+  @GetTransactionByIdDoc()
   @Get()
   selectAllTransactions(@Query('selects', SelectsPipe) select: object) {
     return this.transactionService.selectAll(select);
